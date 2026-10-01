@@ -1,4 +1,4 @@
-name: Run pytest
+name: Run Pytest
 
 on:
   pull_request:
@@ -9,12 +9,15 @@ jobs:
   # ジョブ名
   test:
     runs-on: ubuntu-latest
+    # 環境変数
+    env:
+      DB_USER: "postgres"
 
     # 処理
     steps:
       # リポジトリのチェック
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       # Pythonの準備
       - name: Setup Python
@@ -29,4 +32,10 @@ jobs:
       
       - name: Run pytest
         run: pytest
+
+      - name: Print DB_USER
+        run: echo "DB_USER -> ${DB_USER}"
+
+      - name: Print secrets
+        run: echo "KAZU_API_KEY -> ${{ secrets.KAZU_API_KEY }}"
 
