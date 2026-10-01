@@ -9,6 +9,9 @@ jobs:
   # ジョブ名
   test:
     runs-on: ubuntu-latest
+    # 環境変数
+    env:
+      DB_USER: "postgres"
 
     # 処理
     steps:
@@ -29,4 +32,7 @@ jobs:
       
       - name: Run pytest
         run: pytest
+
+      - name: Print DB_USER
+        run: echo "DB_USER -> ${DB_USER}"
 
