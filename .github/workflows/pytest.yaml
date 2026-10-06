@@ -47,7 +47,7 @@ jobs:
       - name: Get Time
         id: get_time
         # GITHUB_OUTPUTへ値を渡す
-        run: echo "time=$(TZ=Asia/Tokyo date +'%Y-$m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+        run: echo "time=$(TZ=Asia/Tokyo date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
 
       - name: Print github output
       # steps.id名.outputs.key名
