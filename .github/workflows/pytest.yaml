@@ -34,6 +34,7 @@ jobs:
         run: pytest
 
       - name: Failure Log
+      # １つ前のstepが失敗した場合にしたのrunが動く
         if: failure()
         run: echo "１つ前のstepは失敗しました"
 
@@ -42,4 +43,13 @@ jobs:
 
       - name: Print secrets
         run: echo "KAZU_API_KEY -> ${{ secrets.KAZU_API_KEY }}"
+
+      - name: Get Time
+        id: get_time
+        # GITHUB_OUTPUTへ値を渡す
+        run: echo "time=$(date)" >> $GITHUB_OUTPUT
+
+      - name: Print github output
+      # steps.id名.outputs.key名
+        run: echo "１つ前のstepの出力は${{ steps.get_time.outputs.time }}です"
 
