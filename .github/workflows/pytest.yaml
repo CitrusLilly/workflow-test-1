@@ -1,0 +1,55 @@
+name: Run Pytest
+
+on:
+  pull_request:
+    branches: ["main"]
+
+# ジョブ群
+jobs:
+  # ジョブ名
+  test:
+    runs-on: ubuntu-latest
+    # 環境変数
+    env:
+      DB_USER: "postgres"
+
+    # 処理
+    steps:
+      # リポジトリのチェック
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Pythonの準備
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        # Pythonのバージョン指定
+        with:
+          python-version: 3.13
+
+      # 必要なモジュールのインストール
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Run pytest
+        run: pytest
+
+      - name: Failure Log
+      # １つ前のstepが失敗した場合にしたのrunが動く
+        if: failure()
+        run: echo "１つ前のstepは失敗しました"
+
+      - name: Print DB_USER
+        run: echo "DB_USER -> ${DB_USER}"
+
+      - name: Print secrets
+        run: echo "KAZU_API_KEY -> ${{ secrets.KAZU_API_KEY }}"
+
+      - name: Get Time
+        id: get_time
+        # GITHUB_OUTPUTへ値を渡す
+        run: echo "time=$(TZ=Asia/Tokyo date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+
+      - name: Print github output
+      # steps.id名.outputs.key名
+        run: echo "１つ前のstepの出力は${{ steps.get_time.outputs.time }}です"
+
